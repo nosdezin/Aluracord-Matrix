@@ -1,36 +1,7 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import AppConfg from "../config.json";
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: "Open Sans", sans-serif;
-      }
-      // App fit Height
-      html,
-      body,
-      #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      // ./App fit height
-    `}</style>
-  );
-}
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 function Title(props) {
   const Tag = props.tag || "h1";
@@ -62,11 +33,12 @@ function Title(props) {
 // }
 
 export default function PaginaIncial() {
-  const username = "Nosdezin";
+  // const username = "Nosdezin";
+  const [nome, setNome] = useState("Nosdezin");
+  const Root = useRouter();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: "flex",
@@ -100,6 +72,11 @@ export default function PaginaIncial() {
         >
           <Box
             as="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              // window.location.href = "./chat";
+              Root.push("/chat");
+            }}
             styleSheet={{
               display: "flex",
               flexDirection: "column",
@@ -122,6 +99,8 @@ export default function PaginaIncial() {
             </Text>
             <TextField
               fullWidth
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
               textFieldColors={{
                 neutral: {
                   textColor: AppConfg.theme.colors.neutrals[200],
@@ -160,7 +139,7 @@ export default function PaginaIncial() {
           >
             <Image
               styleSheet={{ borderRadius: "50%", marginBottom: "16px" }}
-              src={`https://github.com/${username}.png`}
+              src={`https://github.com/${nome}.png`}
             />
             <Text
               variant="body4"
@@ -171,7 +150,7 @@ export default function PaginaIncial() {
                 borderRadius: "1000px",
               }}
             >
-              {username}
+              {nome}
             </Text>
           </Box>
         </Box>
